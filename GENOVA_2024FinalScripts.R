@@ -1,6 +1,6 @@
 ################################################################################################
 ################################################################################################
-
+######## Combine Cooler Files for GENOVA on Quest 
 #### For some analysis I needed combined cool files
 # ## going to use cooler tools to just merge cool files
 # ###### 
