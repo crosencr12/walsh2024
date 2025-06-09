@@ -60,7 +60,5 @@ bedGraphToBigWig INFc2-TB40E-capture-sorted-100bpmerg_sorted-cleanfinal.bedgraph
 ##################################################################################################
 ##################################################################################################
 ######################### Viral Domains ####################
-############## Used LANCEOTRON to identify peaks, using all peaks
-######### Then use bedtools cluster to identify hotspots on 100bp merged bigwig
-
-sort -k1,1 -k2,2n allTB40Epeaks_LANCEOdata.bed > allTB40Epeaks_LANCEOsort.bed
+## Viral Enriched Regions (VERs) were identified by taking the file "INFc2-TB40E-capture-sorted-nomerg_sorted-cleanfinal.bedgraph"
+## and mapping reads to 100kb bins of the human genome, then taking the top 10% of bins with the most contacts
