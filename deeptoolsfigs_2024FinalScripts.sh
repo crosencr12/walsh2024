@@ -1,25 +1,22 @@
 ######################################################################################################################################################################################################################################################################################################
 ##################################################################################################
 ##################################################################################################
+###### originally performed on an interactive node
 
-srun --pty -N 1 -n 4 --mem=180G --account=b1042 --time=12:00:00 --partition=genomics bash -l
-
-
-workingFiles="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT"
-refDir="/projects/b1154/referenceGenomes/hg38+TB40E"
+workingFiles="~/"
+refDir="~/hg38+TB40E"
 cores="2"
-TT="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/transcription/cov_normbw"
-genedata_v1="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/transcription/beds"
+TT="~/transcription/cov_normbw"
+genedata_v1="~/transcription/beds"
 
-module load deeptools
+# module load deeptools
 
 
 ##################################################################################################
 ##################################################################################################
 ### CUT&RUN
 # Need to combine H3K9me3 R1 and R2 (two reps)
-## files are in 2024finalfigs
-# conda activate test (ucsc conda does not work for averaging)
+
 bigwigAverage -b MOCK_H3K9me3_R1.bigWig MOCK_H3K9me3_R2.bigWig \
 -o MOCK_H3K9me3_avg.bw
 
@@ -116,19 +113,19 @@ bigwigAverage -b  TR19_cov_norm.bw  TR20_cov_norm.bw \
 ############################ Deeptools Figures ###################################################
 ##################################################################################################
 
-workingFiles="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT"
-refDir="/projects/b1154/referenceGenomes/hg38+TB40E"
+workingFiles="~/"
+refDir="~/hg38+TB40E"
 cores="2"
-TT="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/transcription/cov_normbw"
-genedata_v1="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/transcription/beds"
+TT="~/transcription/cov_normbw"
+genedata_v1="~/transcription/beds"
 
 ####################################################
 ############ A / B compartments w/ virus contacts ############
 ####################################################
 # # ## A compartment
 computeMatrix scale-regions \
--S $workingFiles/hic/viraldomains/INF-TB40E_combined.bw \
--R $workingFiles/hic/compartments/INFposPCm.bed \
+-S $workingFiles/INF-TB40E_combined.bw \
+-R $workingFiles/INFposPCm.bed \
 --regionBodyLength 100000 \
 --beforeRegionStartLength 5000 \
 --afterRegionStartLength 5000 \
@@ -142,8 +139,8 @@ computeMatrix scale-regions \
 # # ## B compartment
 # # 
 computeMatrix scale-regions \
--S $workingFiles/hic/viraldomains/INF-TB40E_combined.bw \
--R $workingFiles/hic/compartments/INFnegPCm.bed \
+-S $workingFiles/INF-TB40E_combined.bw \
+-R $workingFiles/INFnegPCm.bed \
 --regionBodyLength 100000 \
 --beforeRegionStartLength 5000 \
 --afterRegionStartLength 5000 \
@@ -174,9 +171,9 @@ plotProfile -m matrix.100kb-TB40Ecombined-INFcompB.gz \
 ###### ###### ###### ###### ###### 
 
 computeMatrix scale-regions \
--S $workingFiles/hic/viraldomains/viral_COMBINED/INFc-TB40E-capture-sorted-100bpmerg.bw \
--R $workingFiles/hic/compartments/Inf_subcomp_A3m.bed $workingFiles/hic/compartments/Inf_subcomp_A2m.bed $workingFiles/hic/compartments/Inf_subcomp_A1m.bed $workingFiles/hic/compartments/Inf_subcomp_A0m.bed \
-$workingFiles/hic/compartments/Inf_subcomp_B3m.bed $workingFiles/hic/compartments/Inf_subcomp_B2m.bed $workingFiles/hic/compartments/Inf_subcomp_B1m.bed $workingFiles/hic/compartments/Inf_subcomp_B0m.bed \
+-S $workingFiles/viral_COMBINED/INFc-TB40E-capture-sorted-100bpmerg.bw \
+-R $workingFiles/Inf_subcomp_A3m.bed $workingFiles/Inf_subcomp_A2m.bed $workingFiles/Inf_subcomp_A1m.bed $workingFiles/Inf_subcomp_A0m.bed \
+$workingFiles/Inf_subcomp_B3m.bed $workingFiles/Inf_subcomp_B2m.bed $workingFiles/Inf_subcomp_B1m.bed $workingFiles/Inf_subcomp_B0m.bed \
 --regionBodyLength 100000 \
 --beforeRegionStartLength 5000 \
 --afterRegionStartLength 5000 \
@@ -215,7 +212,7 @@ plotProfile -m matrix.100kb-TB40Ecombined-INFSUBcomp.gz \
 # 
 computeMatrix scale-regions \
 -S $workingFiles/cutrun/INF_H3K9me3_avg.bw \
--R $workingFiles/hic/compartments/INFposPCm.bed \
+-R $workingFiles/INFposPCm.bed \
 --regionBodyLength 100000 \
 --beforeRegionStartLength 5000 \
 --afterRegionStartLength 5000 \
@@ -229,7 +226,7 @@ computeMatrix scale-regions \
 # # 
 computeMatrix scale-regions \
 -S $workingFiles/cutrun/INF_H3K9me3_avg.bw \
--R $workingFiles/hic/compartments/INFnegPCm.bed \
+-R $workingFiles/INFnegPCm.bed \
 --regionBodyLength 100000 \
 --beforeRegionStartLength 5000 \
 --afterRegionStartLength 5000 \
@@ -338,8 +335,6 @@ plotProfile -m matrix.TR96_avg-allgenesets96.gz \
 --colors "#000000" "#33a02c" "#ff7f00" 
 
 
-
-# $TT/TT17_cov_norm.bw  $TT/TT18_cov_norm.bw $TT/TT19_cov_norm.bw  $TT/TT20_cov_norm.bw
 computeMatrix scale-regions -S $TT/MOCK_TT72_avg.bw $TT/INF_TT72_avg.bw \
                               -R $genedata_v1/All.genes_96.bed $genedata_v1/commonUPgenes.bed $genedata_v1/commonDOWNgenes.bed \
                               --regionBodyLength 3000 \
@@ -348,8 +343,6 @@ computeMatrix scale-regions -S $TT/MOCK_TT72_avg.bw $TT/INF_TT72_avg.bw \
                               --binSize 10 \
                               --blackListFileName $refDir/hg38-blacklist.v2.bed \
                               -o matrix.TT72_avg-allgenesets72.gz 
-#                               --skipZeros \
-#                               --unscaled5prime 500 --unscaled3prime 500
 
 plotProfile -m matrix.TT72_avg-allgenesets72.gz \
 --averageType mean \
@@ -368,8 +361,6 @@ computeMatrix scale-regions -S $TT/MOCK_TR72_avg.bw $TT/INF_TR72_avg.bw \
                               --binSize 10 \
                               --blackListFileName $refDir/hg38-blacklist.v2.bed \
                               -o matrix.TR72_avg-allgenesets72.gz 
-#                               --skipZeros \
-#                               --unscaled5prime 500 --unscaled3prime 500
 
 plotProfile -m matrix.TR72_avg-allgenesets72.gz \
 --averageType mean \
