@@ -9,11 +9,9 @@
 # [topDir]/fastq  - Should contain the fastq files. This code assumes that
 #                   there is an "R" in the appropriate files, i.e. *R*.fastq
 #
-# To run this code use the following: bash /projects/b1154/cdr5028/scripts/ttseq_pipeline_v4.sh
-shopt -s extglob
 version_TTSeq="CR_4.0" 
 export LANG=C #In order for proper perl locale
-emailaddress="${USER}@e.northwestern.edu"
+emailaddress="${USER}@XXX.edu"
 
 # top level directory, can also be set in options
 topDir=$(pwd)
@@ -24,18 +22,15 @@ outputdir=${topDir}"/output"
 # genome ID
 genomeID="hg38+TB40E"
 # scripts directory, contains scripts/
-scriptsDir="/projects/b1154/cdr5028/scripts"
+scriptsDir="~/"
 # trimmomatic directory
-trimmomaticPath="/home/cdr5028/software/anaconda3/bin/trimmomatic/share/trimmomatic-0.39-2/trimmomatic"
-# fastq_screen directory (but runs on (base) environment so no need to load or direct scripts here)
-#fastq_screenDir="/home/cdr5028/software/fastq_screen_v0.15.2"
-# Reference genome direction, contains fasta files 
-refDir="/projects/b1154/referenceGenomes"
+trimmomaticPath="~/trimmomatic"
+refDir="~/referenceGenomes"
 refSeq="${refDir}/${genomeID}/${genomeID}.fna"
 # default account, $account are the $queue nodes
-account="b1042"
+account="XXX"
 # default queue
-queue="genomics"
+queue="XXX"
 # default queue time
 queue_time="12:00:00"
 # processors per node for alignment
