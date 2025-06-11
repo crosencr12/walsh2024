@@ -2,9 +2,6 @@
 ##################################################################################################
 ##################################################################################################
 
-
-
-
 #!/bin/bash
 ##########
 set -euo pipefail
@@ -12,32 +9,26 @@ export LC_ALL=C
 
 ###
 # This is to use the nextflow hic pipeline
-# Run with all fastqs for hic are in subfolder: /projects/b1042/WalshLab/cdr5028/hic/nfcore/fastqs
-## cd /projects/b1042/WalshLab/cdr5028/hic/nfcore
-# Then run this code use the following: bash /projects/b1154/cdr5028/scripts/hic_nf-pipeline_v10_FINALrerun.sh
+# Run with all fastqs for hic in subfolder
 
-topDir="/projects/b1042/WalshLab/cdr5028/hic/nfcore"
+topDir="~/"
 # genomeID="hg38+TB40E+dm6"
 genomeID="hg38+TB40E"
 # scripts directory, contains scripts/
-scriptsDir="/projects/b1154/cdr5028/scripts"
+scriptsDir="~/"
 # Reference genome direction, contains fasta files 
-refDir="/projects/b1154/referenceGenomes/${genomeID}"
+refDir="~/${genomeID}"
 refSeq="${refDir}/${genomeID}.fna"
-# Sample sheet located: /projects/b1042/WalshLab/cdr5028/
-# samplesheet_1="${topDir}/fastqs/nfcore_hic-samplesheet-COMBINE.csv"
-# default account, $account are the $queue nodes
-account="b1042"
+account="XXX"
 # default queue
-queue="genomicslong,genomics,genomics-himem"
-# queuehimem="genomics,genomics-himem"
+queue="XXX"
 # default queue time
 queue_time="48:00:00"
 # processors per node for alignment
 # ppnAlign=24
 # ppnAlign=32
 # email for completion
-emailaddress="${USER}@e.northwestern.edu"
+emailaddress="${USER}@XXX.edu"
 
 #output messages for log files/debugging
 outDir="$topDir/debug"
@@ -278,14 +269,3 @@ nextflow run nf-core/hic \
 
 date
 KD2-COMBINE-NF-HIC`
-
-## Other parameters
-## --split_fastq true --fastq_chunks_size 20000000
-## --res_compartments 250000,500000,1000000
-##  --res_tads 5000,10000,50000
-## --tads_caller hicexplorer 
-## --save_pairs_intermediates true (was possibly to extract "validPairs" instead of combined "allvalidPairs")
-## --save_reference true
-## --save_raw_maps true
-## -c $scriptsDir/nu-CR_genomics_v3.config
-
