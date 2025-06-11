@@ -18,9 +18,9 @@ refSeq="${refDir}/${genomeID}.fna"
 samplesheet="${topDir}/fastqs/nfcore_cutrun-samplesheet.csv"
 
 # default account, $account are the $queue nodes
-account="b1042"
+account="XXX"
 # default queue
-queue="genomics"
+queue="XXX"
 # default queue time
 queue_time="48:00:00"
 # processors per node for alignment
@@ -79,4 +79,4 @@ nextflow run nf-core/cutandrun --input $samplesheet --outdir $outputdir --fasta 
 
 date
 NF-CUTRUN`
-#dependSTAR="afterok:$jid"
+
