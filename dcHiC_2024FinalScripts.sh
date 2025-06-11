@@ -1,27 +1,29 @@
-#!/bin/bash
-##########
-# set -euo pipefail
-export LC_ALL=C
+##############################################################################
+################## Interactive nodes used, but option for script #############
+##############################################################################
 
-#
-## bash /projects/b1154/cdr5028/scripts/dcHiC_v16_combine.sh
-topDir="/projects/b1042/WalshLab/cdr5028/hic/dchic"
+# #!/bin/bash
+# ##########
+# # set -euo pipefail
+# export LC_ALL=C
+
+topDir="~/"
 # genome ID
 genomeID="hg38+TB40E"
 # scripts directory, contains scripts/
-scriptsDir="/projects/b1154/cdr5028/scripts"
+scriptsDir="~/"
 # Reference genome direction, contains fasta files 
-refDir="/projects/b1154/referenceGenomes/${genomeID}"
+refDir="~/${genomeID}"
 refSeq="${refDir}/${genomeID}.fna"
 
 # default account, $account are the $queue nodes
-account="b1042"
+account="XXX"
 # default queue
-queue="genomics"
+queue="XXX"
 # default queue time
 queue_time="24:00:00"
 # email for completion
-emailaddress="${USER}@e.northwestern.edu"
+emailaddress="${USER}@.XXX"
 
 #output messages for log files/debugging
 debugdir="$topDir/debug"
@@ -38,17 +40,14 @@ if [ ! -d "$biasesDir" ]; then
         chmod 777 "$biasesDir"
 fi
 
-software="/home/cdr5028/software/dcHiC"
-fithic="/home/cdr5028/software/fithic/fithic"
-pythonv="/home/cdr5028/software/anaconda3/bin/python"
-pythonv2="/software/anaconda3/envs/dchic/bin/python"
+software="~/"
+fithic="~/"
+hicpro="~/"
+dchic="~/"
 
-hicpro="/projects/b1042/WalshLab/cdr5028/hic/nfcore/output/hicpro/matrix/iced"
-dchic="/projects/b1042/WalshLab/cdr5028/hic/dchic"
-
-hg38_blacklist="/projects/b1154/referenceGenomes/hg38+TB40E/hg38-blacklist.v2sorted.bed"
-centromere="/projects/b1154/referenceGenomes/hg38+TB40E/extra/Modeled_regions_for_hg38MOD.txt"
-# centromere="/projects/b1154/referenceGenomes/hg38+TB40E/hg38_CENTROMEREmod.bed"
+hg38_blacklist="~/hg38+TB40E/hg38-blacklist.v2sorted.bed"
+centromere="~/hg38+TB40E/extra/Modeled_regions_for_hg38MOD.txt"
+# centromere="~/hg38+TB40E/hg38_CENTROMEREmod.bed"
 
 
 ## Make scripts for different resolutions
@@ -66,81 +65,78 @@ res="100kb"
 ## --bdgfile = add bedgraph to viz file generation
 
 ##############################################################################
-########################### Interactive ###########################################
+##############################################################################
 ##############################################################################
 
-srun --pty -N 1 -n 4 --mem=180G --account=b1042 --time=24:00:00 --partition=genomics,genomics-himem,genomicslong bash -l
+#### biases files were regenerated for use in fithic (if applicable)
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/MOCK72rep1.${resolution}_iced.matrix \
+# -b $hicpro/MOCK72rep1.${resolution}_abs.bed \
+# -s $hicpro/MOCK72rep1.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK72rep1.biases.gz
+# rm fithic*
+
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/MOCK120rep1.${resolution}_iced.matrix \
+# -b $hicpro/MOCK120rep1.${resolution}_abs.bed \
+# -s $hicpro/MOCK120rep1.${resolution}_iced.matrix.biases \
+# -r $resolution 
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK120rep1.biases.gz
+# rm fithic*
+
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/MOCK72rep2.${resolution}_iced.matrix \
+# -b $hicpro/MOCK72rep2.${resolution}_abs.bed \
+# -s $hicpro/MOCK72rep2.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK72rep2.biases.gz
+# rm fithic*
+
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/MOCK120rep2.${resolution}_iced.matrix \
+# -b $hicpro/MOCK120rep2.${resolution}_abs.bed \
+# -s $hicpro/MOCK120rep2.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK120rep2.biases.gz
+# rm fithic*
 
 
-cd /projects/b1042/WalshLab/cdr5028/hic/fithic
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/MOCK72rep1.${resolution}_iced.matrix \
--b $hicpro/MOCK72rep1.${resolution}_abs.bed \
--s $hicpro/MOCK72rep1.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK72rep1.biases.gz
-rm fithic*
+# cd /projects/b1042/WalshLab/cdr5028/hic/fithic
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/INF72rep1.${resolution}_iced.matrix \
+# -b $hicpro/INF72rep1.${resolution}_abs.bed \
+# -s $hicpro/INF72rep1.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF72rep1.biases.gz
+# rm fithic*
 
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/MOCK120rep1.${resolution}_iced.matrix \
--b $hicpro/MOCK120rep1.${resolution}_abs.bed \
--s $hicpro/MOCK120rep1.${resolution}_iced.matrix.biases \
--r $resolution 
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK120rep1.biases.gz
-rm fithic*
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/INF96rep3.${resolution}_iced.matrix \
+# -b $hicpro/INF96rep3.${resolution}_abs.bed \
+# -s $hicpro/INF96rep3.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF96rep3.biases.gz
+# rm fithic*
 
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/MOCK72rep2.${resolution}_iced.matrix \
--b $hicpro/MOCK72rep2.${resolution}_abs.bed \
--s $hicpro/MOCK72rep2.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK72rep2.biases.gz
-rm fithic*
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/INF72rep2.${resolution}_iced.matrix \
+# -b $hicpro/INF72rep2.${resolution}_abs.bed \
+# -s $hicpro/INF72rep2.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF72rep2.biases.gz
+# rm fithic*
 
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/MOCK120rep2.${resolution}_iced.matrix \
--b $hicpro/MOCK120rep2.${resolution}_abs.bed \
--s $hicpro/MOCK120rep2.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > MOCK120rep2.biases.gz
-rm fithic*
+# python ~//utils/HiCPro2FitHiC.py \
+# -i $hicpro/INF96rep4.${resolution}_iced.matrix \
+# -b $hicpro/INF96rep4.${resolution}_abs.bed \
+# -s $hicpro/INF96rep4.${resolution}_iced.matrix.biases \
+# -r $resolution
+# zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF96rep4.biases.gz
+# rm fithic*
 
-
-cd /projects/b1042/WalshLab/cdr5028/hic/fithic
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/INF72rep1.${resolution}_iced.matrix \
--b $hicpro/INF72rep1.${resolution}_abs.bed \
--s $hicpro/INF72rep1.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF72rep1.biases.gz
-rm fithic*
-
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/INF96rep3.${resolution}_iced.matrix \
--b $hicpro/INF96rep3.${resolution}_abs.bed \
--s $hicpro/INF96rep3.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF96rep3.biases.gz
-rm fithic*
-
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/INF72rep2.${resolution}_iced.matrix \
--b $hicpro/INF72rep2.${resolution}_abs.bed \
--s $hicpro/INF72rep2.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF72rep2.biases.gz
-rm fithic*
-
-python /home/cdr5028/software/fithic/fithic/utils/HiCPro2FitHiC.py \
--i $hicpro/INF96rep4.${resolution}_iced.matrix \
--b $hicpro/INF96rep4.${resolution}_abs.bed \
--s $hicpro/INF96rep4.${resolution}_iced.matrix.biases \
--r $resolution
-zcat fithic.biases.gz | awk -F '\t' '!($3=="-1")' | gzip > INF96rep4.biases.gz
-rm fithic*
-
-topDir="/projects/b1042/WalshLab/cdr5028/hic/dchic"
-cp *biases* $topDir
+# topDir="~/"
+# cp *biases* $topDir
 
 
 
@@ -157,7 +153,7 @@ bedtools intersect -wa -c -f 1.0 -a $hicpro/INF96rep4.100000_abs.bed -b $hg38_bl
 
 ### using unmodified bed/matrix files from nfcore/HiCpro output
 ## this did work, but would be better with blacklist info in bed file
-conda activate /home/cdr5028/software/anaconda3/envs/dchic
+conda activate ~/dchic
 
 ## removing some chromosomes lacking parms
 ## have to split arms for better compartment calling
@@ -189,23 +185,23 @@ Rscript $software/dchicf.r --file input.COMBINED_HiC${res}.txt --pcatype fithic 
 ####
 ## copy .txt files needed for fithic loop calling (from both arms?)
 # for file in $list;
-# do rm /projects/b1042/WalshLab/cdr5028/hic/dchic/${file}_100kb_pca/intra_pca/${file}_100kb_mat/chr*.txt
+# do rm ~//${file}_100kb_pca/intra_pca/${file}_100kb_mat/chr*.txt
 # done
 
-list="MOCK_R1 MOCK_R2 MOCK_R3 MOCK_R4 INF_R1 INF_R2 INF_R3 INF_R4 INF_R5 INF_R6"
+list="MOCK_R1 MOCK_R2 MOCK_R3 MOCK_R4 INF_R1 INF_R2 INF_R3 INF_R4"
 chromlistQ="chr13 chr14 chr15 chr21 chr22"
 chromlist="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr16 chr17 chr18 chr19 chr20 chrX"
 
 for file in $list;
-do cp /projects/b1042/WalshLab/cdr5028/hic/dchic/parm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/chr*.txt \
-/projects/b1042/WalshLab/cdr5028/hic/dchic/${file}_100kb_pca/intra_pca/${file}_100kb_mat
+do cp ~//parm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/chr*.txt \
+~//${file}_100kb_pca/intra_pca/${file}_100kb_mat
 done
 
 for file in $list;
 do
 for chrom in $chromlistQ;
-do cp /projects/b1042/WalshLab/cdr5028/hic/dchic/qarm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt \
-/projects/b1042/WalshLab/cdr5028/hic/dchic/${file}_100kb_pca/intra_pca/${file}_100kb_mat
+do cp ~//qarm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt \
+~//${file}_100kb_pca/intra_pca/${file}_100kb_mat
 done
 done
 
@@ -213,8 +209,8 @@ done
 for file in $list;
 do
 for chrom in $chromlist;
-do tail -n+2 /projects/b1042/WalshLab/cdr5028/hic/dchic/qarm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt >> \
-/projects/b1042/WalshLab/cdr5028/hic/dchic/${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt
+do tail -n+2 ~//qarm/${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt >> \
+~//${file}_100kb_pca/intra_pca/${file}_100kb_mat/${chrom}.txt
 done
 done
 ####
