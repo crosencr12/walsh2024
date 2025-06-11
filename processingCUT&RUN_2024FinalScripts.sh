@@ -1,27 +1,21 @@
-######################################################################################################################################################################################################################################################################################################
 ##################################################################################################
 ##################################################################################################
-
-
+##################################################################################################
 
 #!/bin/bash
 ##########
 #
 # This is to use the nextflow cut&run pipeline
-# Run with all fastqs for cut&run are in subfolder: /projects/b1042/WalshLab/cdr5028/cutrun/fastqs
-## cd /projects/b1042/WalshLab/cdr5028/cutrun/fastqs
-# Then run this code use the following: bash /projects/b1154/cdr5028/scripts/cutrun_nf-pipeline_v2.sh
-
-topDir="/projects/b1042/WalshLab/cdr5028/cutrun"
+topDir="~/"
 # genome ID
 genomeID="hg38+TB40E"
 # scripts directory, contains scripts/
-scriptsDir="/projects/b1154/cdr5028/scripts"
+scriptsDir="~/scripts"
 # Reference genome direction, contains fasta files 
-refDir="/projects/b1154/referenceGenomes/${genomeID}"
+refDir="~/${genomeID}"
 refSeq="${refDir}/${genomeID}.fna"
-# Sample sheet located: /projects/b1042/WalshLab/cdr5028/cutrun
-samplesheet="${topDir}/fastqs/nfcore_cutrun-samplesheet_v2.csv"
+# Sample sheet located: ~/
+samplesheet="${topDir}/fastqs/nfcore_cutrun-samplesheet.csv"
 
 # default account, $account are the $queue nodes
 account="b1042"
@@ -32,7 +26,7 @@ queue_time="48:00:00"
 # processors per node for alignment
 ppnAlign=24
 # email for completion
-emailaddress="${USER}@e.northwestern.edu"
+emailaddress="${USER}@XXX.edu"
 
 #output messages for log files/debugging
 outDir="$topDir/debug"
