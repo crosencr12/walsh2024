@@ -6,7 +6,7 @@
 
 # ##### Need hg38+TB40E digested genome by HiC-Pro/digest_genome.py (Arima: restriction_site='^GATC,G^ANTC, ligation_site='GATCGATC,GATCANTC,GANTGATC,GANTANTC)
 # # Generate frag site for genome (both hg38 and TB40E)
-# python /home/cdr5028/software/HiC-Pro/bin/utils/digest_genome.py -r G^ANTC ^GATC  -o hg38+TB40E_arima.bed $refDir/hg38+TB40E.fna
+# python ~/digest_genome.py -r G^ANTC ^GATC  -o hg38+TB40E_arima.bed $refDir/hg38+TB40E.fna
 # # crop the chrUn and alt chromosomes out (saves time)
 # grep -v chrUN hg38+TB40E_arima.bed > hg38+TB40E_arima-tmp.bed
 # grep -v random hg38+TB40E_arima-tmp.bed > hg38+TB40E_arima-clean.bed
@@ -23,15 +23,13 @@
 # bedtools makewindows -g TB40E.chrom.sizes -w 1000 -i winnum -s 500 > TB40E_1kbins.500bw.bed
 ##################################################################################################
 ################### Infected 
-dataDir="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/hic/hicmatrices/hicpro_allValidPairs"
+dataDir="~/"
 cores="2"
-software="/home/cdr5028/software"
-refDir="/projects/b1154/referenceGenomes/hg38+TB40E"
-workingFiles="/projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT"
+software="~/"
+refDir="~/"
+workingFiles="~/"
 
-### 8/28/24
 ## making new combined (all infected samples) TB40E capture sites
-# pwd /projects/b1042/WalshLab/cdr5028/2024_figurefiles_CURRENT/hic/viraldomains
 python $software/HiC-Pro/bin/utils/make_viewpoints.py -i $dataDir/INFc2.allValidPairs \
 -f $refDir/hg38+TB40E_arima.bed  -t $refDir/TB40E.bed \
 -v -o INFc2-TB40E-capture.bedgraph
