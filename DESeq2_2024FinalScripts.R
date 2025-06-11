@@ -1,8 +1,5 @@
-
-# /home/cdr5028/R/FINAL-Transcription_v9
-
-# I  created a txt and csv files to point to of all htseq-counts data from all sequencing samples (5/2023)
-## Make sure htseq-count data is in DESeq2 folder on Quest for processing
+# Created a txt and csv files to point to of all htseq-counts data from all sequencing samples
+## Make sure htseq-count data is in DESeq2 folder for processing using this structure
 
 # For a new R directory/project:
 
@@ -19,15 +16,10 @@ install.packages("remotes")
 remotes::install_github('YuLab-SMU/ggtree') ## needed for clusterprofiler
 BiocManager::install("clusterProfiler")
 BiocManager::install('org.Hs.eg.db')
-# BiocManager::install("topGO") #### Not used, clusterprofiler enrichGO used instead
 # BiocManager::install('circlize')
 # BiocManager::install('digest')
-
-# for fixing biomart
-# https://stackoverflow.com/questions/77370659/error-failed-to-collect-lazy-table-caused-by-error-in-db-collect-using
-# remotes::install_version("dbplyr", version = "2.3.4")
 # BiocManager::install("biomaRt")
-# library(biomaRt)
+
 
 ## Going to need these packages
 library(pheatmap)
@@ -39,6 +31,7 @@ library('clusterProfiler')
 library("circlize")
 library('org.Hs.eg.db')
 library('EnhancedVolcano')
+# library(biomaRt)
 # library(reshape2)
 # library("digest")
 # library("cluster")
@@ -59,9 +52,9 @@ library('EnhancedVolcano')
 options(max.print=100000)
 
 ## htseq_counts files (from TT/RNAseq pipeline) should be in this folder for processing
-parentDir = '/projects/b1042/WalshLab/cdr5028/DESeq2/htseq_counts'
+parentDir = '~/htseq_counts'
 # Any output files should go here
-outputDir = '/projects/b1042/WalshLab/cdr5028/DESeq2/'
+outputDir = '~/'
 
 # 74 samples total (including 1xKD TT/RNAseq samples)
 # metaData <- read.csv('htseqcounts_file_DESEQ2-4_metadata.csv', header = TRUE, sep = ",")
@@ -335,53 +328,6 @@ vol_res_res_96TTwKD <- EnhancedVolcano(res_C_mock96,
                                     FCcutoff = 2.0,
                                     labSize = 0.0)
 
-# # create custom key-value pairs for different cell-types
-# # this can be achieved with nested ifelse statements
-# keyvals.colour <- ifelse(
-#   rownames(res) %in% celltype1, 'lightgreen',
-#   ifelse(rownames(res) %in% celltype2, 'darkgreen',
-#          ifelse(rownames(res) %in% celltype3, 'orange',
-#                 ifelse(rownames(res) %in% celltype4, 'orangered',
-#          'black'))))
-# 
-# keyvals.colour[is.na(keyvals.colour)] <- 'black'
-# names(keyvals.colour)[keyvals.colour == 'black'] <- 'notinlists'
-# names(keyvals.colour)[keyvals.colour == 'orange'] <- 'genelist3'
-# names(keyvals.colour)[keyvals.colour == 'orangered'] <- 'genelist4'
-# names(keyvals.colour)[keyvals.colour == 'darkgreen'] <- 'genelist2'
-# names(keyvals.colour)[keyvals.colour == 'lightgreen'] <- 'genelist1'
-# 
-# p2 <- EnhancedVolcano(res,
-#                       lab = rownames(res),
-#                       x = 'log2FoldChange',
-#                       y = 'pvalue',
-#                       selectLab = rownames(res)[which(names(keyvals.colour) %in% c('genelist2', 'genelist1'))],
-#                       xlab = bquote(~Log[2]~ 'fold change'),
-#                       title = '',
-#                       pCutoff = 0.05,
-#                       FCcutoff = 0.5,
-#                       pointSize = 1,
-#                       labSize = 0.0,
-#                       # shapeCustom = keyvals.shape,
-#                       colCustom = keyvals.colour,
-#                       colAlpha = 1,
-#                       legendPosition = 'right',
-#                       legendLabSize = 5,
-#                       legendIconSize = 2.5,
-#                       # drawConnectors = TRUE,
-#                       # widthConnectors = 0.5,
-#                       # colConnectors = 'grey50',
-#                       gridlines.major = TRUE,
-#                       gridlines.minor = FALSE,
-#                       border = 'full',
-#                       borderWidth = 1.0,
-#                       borderColour = 'black')
-# 
-# 
-# p2 + coord_flip()
-
-
-
 #########################################################################################################
 ############################################ GO terms ###################################################
 #########################################################################################################
@@ -462,7 +408,7 @@ mart <- useMart('ensembl', dataset = 'hsapiens_gene_ensembl')
 mart <- useEnsembl(biomart='ensembl', dataset='hsapiens_gene_ensembl')
 # head(listAttributes(mart), 20)
 
-geneList <- candidate_list.24hr.3.4
+geneList <- listX
 geneList.tmp <- biomaRt::getBM(attributes=c('chromosome_name','start_position','end_position','strand','ensembl_gene_id','external_gene_name'),
                                filters='ensembl_gene_id', values = geneList, mart = mart)
 #create a table that resembles a BED file
@@ -479,7 +425,7 @@ geneList.bed$strand <- gsub(pattern = "-1",replacement = "-",x = geneList.bed$st
 geneList.bed$strand <- gsub(pattern = "1",replacement = "+",x = geneList.bed$strand)
 # write bed file
 write.table(x = geneList.bed,
-            file = 'candidate_list.24hr.3.4.bed',
+            file = 'listX.bed',
             quote = F,
             sep = "\t",
             row.names = F,
